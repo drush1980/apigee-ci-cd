@@ -3,7 +3,11 @@ steps:
     - name: 'gcr.io/cloud-builders/gcloud'
       entrypoint: 'bash'
       args: [ '-c', 'gcloud secrets versions access 1 --secret=apigee-admin-pw > decrypted-data.txt']    
-    # Static Code Analysis, Unit Test and Coverage
+    # npm install
+    - name: 'gcr.io/cloud-builders/npm'
+      entrypoint: 'npm'
+      args: [ 'install']
+      # Static Code Analysis, Unit Test and Coverage
     - name: 'gcr.io/cloud-builders/mvn'
       entrypoint: 'bash'
       args: ['-c', 'mvn -ntp test -P${_APIGEE_PROFILE} -Ddeployment.suffix=${_APIGEE_PREFIX} -Dcommit=$COMMIT_SHA -Dbranch=$BRANCH_NAME -Duser.name=cloudbuild']
