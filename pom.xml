@@ -170,7 +170,7 @@
 						</replacement>
 						<replacement>
 							<token>@description</token>
-							<value>commit ${commit} from ${branch} branch. Deployed by ${user.name}</value>
+							<value>Commit ${commit} from repo: ${repo}, branch: ${branch}. Deployed by ${user.name}</value>
 						</replacement>
 						<replacement>
 							<token>fixer-api-key-here</token>
