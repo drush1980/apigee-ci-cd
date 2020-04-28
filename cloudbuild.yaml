@@ -17,5 +17,4 @@ steps:
       args: ['mvn -ntp apigee-enterprise:deploy -P${_APIGEE_PROFILE} -Ddeployment.suffix=${_APIGEE_PREFIX} -Dapigeeorg=${_APIGEE_ORG} -Dusername=${_APIGEE_USER} -Dpassword=$(cat decrypted-data.txt)']
     # Functional Test
     - name: 'gcr.io/drush-apigee/mvn-plus-node'
-      entrypoint: 'node'
-      args: ['./node_modules/cucumber/bin/cucumber.js target/test/integration/features --format json:target/reports.json']
+      args: ['node ./node_modules/cucumber/bin/cucumber.js target/test/integration/features --format json:target/reports.json']
