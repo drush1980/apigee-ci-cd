@@ -1,0 +1,20 @@
+steps:
+    # Get admin credential
+    - name: 'gcr.io/cloud-builders/gcloud'
+      entrypoint: 'bash'
+      args: [ '-c', 'gcloud secrets versions access 1 --secret=apigee-admin-pw > decrypted-data.txt']
+      # Static Code Analysis, Unit Test and Coverage
+    - name: 'gcr.io/drush-apigee/mvn-plus-node'
+      args: ['mvn -ntp test -P${_APIGEE_PROFILE} -Ddeployment.suffix=${_APIGEE_PREFIX} -Dapigeeorg=${_APIGEE_ORG} -Dcommit=$SHORT_SHA -Drepo=$REPO_NAME -Dbranch=$BRANCH_NAME -Duser.name=cloudbuild']
+    # Configurations
+    - name: 'gcr.io/drush-apigee/mvn-plus-node'
+      args: ['mvn -ntp apigee-config:keyvaluemaps apigee-config:targetservers apigee-config:caches -P${_APIGEE_PROFILE} -Dapigeeorg=${_APIGEE_ORG} -Dusername=${_APIGEE_USER} -Dpassword=$(cat decrypted-data.txt) -Dapigee.config.options=update -Dapigee.config.dir=./resources/edge']
+    # Package proxy bundle
+    - name: 'gcr.io/drush-apigee/mvn-plus-node'
+      args: ['mvn -ntp apigee-enterprise:configure -P${_APIGEE_PROFILE} -Ddeployment.suffix=${_APIGEE_PREFIX} -Dapigeeorg=${_APIGEE_ORG}']
+    # Deploy proxy bundle
+    - name: 'gcr.io/drush-apigee/mvn-plus-node'
+      args: ['mvn -ntp apigee-enterprise:deploy -P${_APIGEE_PROFILE} -Ddeployment.suffix=${_APIGEE_PREFIX} -Dapigeeorg=${_APIGEE_ORG} -Dusername=${_APIGEE_USER} -Dpassword=$(cat decrypted-data.txt)']
+    # Functional Test
+    - name: 'gcr.io/drush-apigee/mvn-plus-node'
+      args: ['node ./node_modules/cucumber/bin/cucumber.js target/test/integration/features --format json:target/reports.json']

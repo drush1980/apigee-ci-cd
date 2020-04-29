@@ -31,7 +31,8 @@
 		<target.root.dir>${basedir}/target</target.root.dir>
 		<deployment.suffix>${user.name}</deployment.suffix>
 		<commit></commit>
-		<branch>a local</branch>
+		<repo>local</repo>
+		<branch>local</branch>
 	</properties>
 
 	<!-- This is where you add the environment specific properties under various profile names -->
@@ -44,11 +45,11 @@
 				<apigee.env>test</apigee.env>
 				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
 				<apigee.apiversion>v1</apigee.apiversion>
-				<apigee.org>saisarantest-eval</apigee.org>
+				<apigee.org>${apigeeorg}</apigee.org>
 				<apigee.username>${username}</apigee.username>
 				<apigee.password>${password}</apigee.password>
 				<apigee.options>update</apigee.options>
-				<api.northbound.domain>saisarantest-eval-test.apigee.net</api.northbound.domain>
+				<api.northbound.domain>${apigeeorg}-test.apigee.net</api.northbound.domain>
 				<api.testtag>~@wip</api.testtag>
 			</properties>
 		</profile>
@@ -59,12 +60,12 @@
 				<apigee.env>prod</apigee.env>
 				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
 				<apigee.apiversion>v1</apigee.apiversion>
-				<apigee.org>saisarantest-eval</apigee.org>
+				<apigee.org>${apigeeorg}</apigee.org>
 				<apigee.username>${username}</apigee.username>
 				<apigee.password>${password}</apigee.password>
 				<apigee.options>override</apigee.options>
 				<apigee.override.delay>5</apigee.override.delay>
-				<api.northbound.domain>saisarantest-eval-prod.apigee.net</api.northbound.domain>
+				<api.northbound.domain>${apigeeorg}-prod.apigee.net</api.northbound.domain>
 				<api.testtag>~@wip,~@mock</api.testtag>
 			</properties>
 		</profile>
@@ -128,7 +129,6 @@
 									<includes>
 										<include>apiproxy/**</include>
 										<include>test/integration/**</include>
-										<include>edge.json</include>
 									</includes>
 								</resource>
 							</resources>
@@ -171,7 +171,7 @@
 						</replacement>
 						<replacement>
 							<token>@description</token>
-							<value>commit ${commit} from ${branch} branch. Deployed by ${user.name}</value>
+							<value>Commit ${commit} from repo: ${repo}, branch: ${branch}. Deployed by ${user.name}</value>
 						</replacement>
 						<replacement>
 							<token>fixer-api-key-here</token>
@@ -184,7 +184,7 @@
 			<plugin>
 			    <groupId>com.apigee.edge.config</groupId>
 			    <artifactId>apigee-config-maven-plugin</artifactId>
-			    <version>1.2.2</version>
+			    <version>1.3.8</version>
 			    <executions>
 			        <execution>
 			            <id>create-config-kvm</id>
@@ -193,6 +193,20 @@
 			                <goal>keyvaluemaps</goal>
 			            </goals>
 			        </execution>
+			        <execution>
+			            <id>create-config-targetservers</id>
+			            <phase>package</phase>                        
+			            <goals>
+			                <goal>targetservers</goal>
+			            </goals>
+			        </execution>
+			        <execution>
+                        <id>create-config-cache</id>
+                        <phase>package</phase>                        
+                        <goals>
+                            <goal>caches</goal>
+                        </goals>
+                    </execution>
 			    </executions>
 			</plugin> 
 
