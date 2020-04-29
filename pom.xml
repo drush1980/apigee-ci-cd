@@ -31,7 +31,8 @@
 		<target.root.dir>${basedir}/target</target.root.dir>
 		<deployment.suffix>${user.name}</deployment.suffix>
 		<commit></commit>
-		<branch>a local</branch>
+		<repo>local</repo>
+		<branch>local</branch>
 	</properties>
 
 	<!-- This is where you add the environment specific properties under various profile names -->
@@ -170,7 +171,7 @@
 						</replacement>
 						<replacement>
 							<token>@description</token>
-							<value>commit ${commit} from ${branch} branch. Deployed by ${user.name}</value>
+							<value>Commit ${commit} from repo: ${repo}, branch: ${branch}. Deployed by ${user.name}</value>
 						</replacement>
 						<replacement>
 							<token>fixer-api-key-here</token>
