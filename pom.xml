@@ -31,7 +31,8 @@
 		<target.root.dir>${basedir}/target</target.root.dir>
 		<deployment.suffix>${user.name}</deployment.suffix>
 		<commit></commit>
-		<branch>a local</branch>
+		<repo>local</repo>
+		<branch>local</branch>
 	</properties>
 
 	<!-- This is where you add the environment specific properties under various profile names -->
