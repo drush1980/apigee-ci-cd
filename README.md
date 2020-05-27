@@ -14,4 +14,4 @@
 - When developing locally run the following commands to package, test and deploy:
   1. `mvn test` - run linting, unit test and code coverage steps
   2. `mvn apigee-enterprise:configure apigee-enterprise:deploy -Ptest -Dapigeeorg={apigee org name} -Dusername={admin username} -Dpassword={admin password}` - package and deploy the API proxy bundle
-  - Running both of these commands will deploy a bundle with the local user name as the deployment suffix
+  - Running both of these commands will deploy a bundle with the local user name as the deployment suffix.
